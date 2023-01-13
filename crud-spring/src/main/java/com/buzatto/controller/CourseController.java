@@ -3,6 +3,8 @@ package com.buzatto.controller;
 import com.buzatto.model.Course;
 import com.buzatto.service.CourseService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +22,9 @@ public class CourseController {
     }
 
     @PostMapping
-    public Course save(@RequestBody Course course) {
-        return courseService.save(course);
+    public ResponseEntity<Course> save(@RequestBody Course course) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(courseService.save(course));
     }
 
 }
