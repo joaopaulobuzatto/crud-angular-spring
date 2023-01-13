@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {NonNullableFormBuilder} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Location} from '@angular/common';
 
@@ -12,23 +12,21 @@ import {CoursesService} from '../services/courses.service';
 })
 export class CourseFormComponent implements OnInit {
 
-  form: FormGroup;
+  form = this.formBuilder.group({
+    name: [''],
+    category: ['']
+  });
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private formBuilder: NonNullableFormBuilder,
               private service: CoursesService,
               private snackBar: MatSnackBar,
               private location: Location) {
-    this.form = this.formBuilder.group({
-      name: [null],
-      category: [null]
-    });
   }
 
   ngOnInit(): void {
   }
 
   onSubmit() {
-    console.log(this.form.value);
     this.service.save(this.form.value)
       .subscribe(
         result => {
@@ -43,7 +41,7 @@ export class CourseFormComponent implements OnInit {
   }
 
   onSuccess() {
-    this.snackBar.open('Sucesso ao salvar curso.', '', {
+    this.snackBar.open('Curso salvo com sucesso!', '', {
       duration: 3000
     });
     this.onCancel();
