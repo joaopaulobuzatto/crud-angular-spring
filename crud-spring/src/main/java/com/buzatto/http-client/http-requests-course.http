@@ -10,7 +10,7 @@ POST http://localhost:8080/api/courses
 Content-Type: application/json
 
 {
-  "name": "Spring",
+  "name": "asdf",
   "category": "back-end"
 }
 

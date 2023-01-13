@@ -3,9 +3,7 @@ package com.buzatto.controller;
 import com.buzatto.model.Course;
 import com.buzatto.service.CourseService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,6 +17,11 @@ public class CourseController {
     @GetMapping
     public List<Course> list() {
         return courseService.list();
+    }
+
+    @PostMapping
+    public Course save(@RequestBody Course course) {
+        return courseService.save(course);
     }
 
 }
