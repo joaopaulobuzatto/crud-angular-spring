@@ -21,10 +21,16 @@ public class CourseController {
         return courseService.list();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Course> findById(@PathVariable Long id) {
+        return courseService.findById(id)
+                .map(course -> ResponseEntity.ok().body(course))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public ResponseEntity<Course> save(@RequestBody Course course) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(courseService.save(course));
     }
-
 }

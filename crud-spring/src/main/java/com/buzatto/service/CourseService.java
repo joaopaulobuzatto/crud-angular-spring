@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -15,6 +16,10 @@ public class CourseService {
 
     public List<Course> list() {
         return courseRepository.findAll();
+    }
+
+    public Optional<Course> findById(Long id) {
+        return courseRepository.findById(id);
     }
 
     public Course save(Course course) {
