@@ -25,4 +25,13 @@ public class CourseService {
     public Course save(Course course) {
         return courseRepository.save(course);
     }
+
+    public Optional<Course> update(Long id, Course course) {
+        return findById(id)
+                .map(recordFound -> {
+                    recordFound.setName(course.getName());
+                    recordFound.setCategory(course.getCategory());
+                    return save(recordFound);
+                });
+    }
 }

@@ -29,8 +29,15 @@ public class CourseController {
     }
 
     @PostMapping
-    public ResponseEntity<Course> save(@RequestBody Course course) {
+    public ResponseEntity<Course> create(@RequestBody Course course) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(courseService.save(course));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Course> update(@PathVariable Long id, @RequestBody Course course) {
+        return courseService.update(id, course)
+                .map(courseUpdated -> ResponseEntity.ok().body(courseUpdated))
+                .orElse(ResponseEntity.notFound().build());
     }
 }
