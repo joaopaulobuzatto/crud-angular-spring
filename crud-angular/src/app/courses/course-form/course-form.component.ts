@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NonNullableFormBuilder} from '@angular/forms';
+import {NonNullableFormBuilder, Validators} from '@angular/forms';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Location} from '@angular/common';
 
@@ -16,8 +16,8 @@ export class CourseFormComponent implements OnInit {
 
   form = this.formBuilder.group({
     _id: [''],
-    name: [''],
-    category: ['']
+    name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+    category: ['', [Validators.required, Validators.maxLength(10)]]
   });
 
   constructor(private formBuilder: NonNullableFormBuilder,
@@ -62,4 +62,25 @@ export class CourseFormComponent implements OnInit {
       duration: 3000
     });
   }
+
+  getErrorMessage(fieldName: string) {
+    const field = this.form.get(fieldName);
+
+    if (field?.hasError('required')) {
+      return 'Campo obrigatório.';
+    }
+
+    if (field?.hasError('minlength')) {
+      const requiredLength = field?.errors ? field.errors['minlength']['requiredLength'] : 5;
+      return `Tamanho mínimo precisa ser de ${requiredLength} caracteres.`;
+    }
+
+    if (field?.hasError('maxlength')) {
+      const requiredLength = field?.errors ? field.errors['maxlength']['requiredLength'] : 200;
+      return `Tamanho máximo excedido de ${requiredLength} caracteres.`;
+    }
+
+    return 'Campo inválido.';
+  }
+
 }
