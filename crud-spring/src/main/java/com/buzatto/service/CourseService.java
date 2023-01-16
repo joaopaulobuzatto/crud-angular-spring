@@ -34,4 +34,8 @@ public class CourseService {
                     return save(recordFound);
                 });
     }
+
+    public void delete(Long id) {
+        courseRepository.deleteById(id);
+    }
 }
