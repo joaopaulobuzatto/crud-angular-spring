@@ -5,7 +5,6 @@ import com.buzatto.service.CourseService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,10 +15,13 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping(path = "/api/courses")
-@AllArgsConstructor
 public class CourseController {
 
     private final CourseService courseService;
+
+    public CourseController(CourseService courseService) {
+        this.courseService = courseService;
+    }
 
     @GetMapping
     public List<Course> list() {
@@ -42,17 +44,15 @@ public class CourseController {
     @PutMapping("/{id}")
     public ResponseEntity<Course> update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Course course) {
         return courseService.update(id, course)
-                .map(courseUpdated -> ResponseEntity.ok().body(courseUpdated))
+                .map(recordFound -> ResponseEntity.ok().body(recordFound))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable @NotNull @Positive Long id) {
-        return courseService.findById(id)
-                .map(recordFound -> {
-                    courseService.delete(id);
-                    return ResponseEntity.noContent().<Void>build();
-                })
-                .orElse(ResponseEntity.notFound().build());
+        if (courseService.delete(id)) {
+            return ResponseEntity.noContent().<Void>build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

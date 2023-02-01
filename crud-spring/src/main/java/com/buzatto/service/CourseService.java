@@ -2,31 +2,39 @@ package com.buzatto.service;
 
 import com.buzatto.model.Course;
 import com.buzatto.repository.CourseRepository;
-import lombok.AllArgsConstructor;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
 
+@Validated
 @Service
-@AllArgsConstructor
 public class CourseService {
 
     private final CourseRepository courseRepository;
+
+    public CourseService(CourseRepository courseRepository) {
+        this.courseRepository = courseRepository;
+    }
 
     public List<Course> list() {
         return courseRepository.findAll();
     }
 
-    public Optional<Course> findById(Long id) {
+    public Optional<Course> findById(@PathVariable @NotNull @Positive Long id) {
         return courseRepository.findById(id);
     }
 
-    public Course save(Course course) {
+    public Course save(@Valid Course course) {
         return courseRepository.save(course);
     }
 
-    public Optional<Course> update(Long id, Course course) {
+    public Optional<Course> update(@NotNull @Positive Long id, @Valid Course course) {
         return findById(id)
                 .map(recordFound -> {
                     recordFound.setName(course.getName());
@@ -35,7 +43,12 @@ public class CourseService {
                 });
     }
 
-    public void delete(Long id) {
-        courseRepository.deleteById(id);
+    public boolean delete(@NotNull @Positive Long id) {
+        return findById(id)
+                .map(recordFound -> {
+                    courseRepository.deleteById(id);
+                    return true;
+                })
+                .orElse(false);
     }
 }
