@@ -1,5 +1,6 @@
 package com.buzatto.service;
 
+import com.buzatto.exception.RecordNotFoundException;
 import com.buzatto.model.Course;
 import com.buzatto.repository.CourseRepository;
 import jakarta.validation.Valid;
@@ -26,29 +27,25 @@ public class CourseService {
         return courseRepository.findAll();
     }
 
-    public Optional<Course> findById(@PathVariable @NotNull @Positive Long id) {
-        return courseRepository.findById(id);
+    public Course findById(@PathVariable @NotNull @Positive Long id) {
+        return courseRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
     }
 
     public Course save(@Valid Course course) {
         return courseRepository.save(course);
     }
 
-    public Optional<Course> update(@NotNull @Positive Long id, @Valid Course course) {
-        return findById(id)
+    public Course update(@NotNull @Positive Long id, @Valid Course course) {
+        return courseRepository.findById(id)
                 .map(recordFound -> {
                     recordFound.setName(course.getName());
                     recordFound.setCategory(course.getCategory());
                     return save(recordFound);
-                });
+                }).orElseThrow(() -> new RecordNotFoundException(id));
     }
 
-    public boolean delete(@NotNull @Positive Long id) {
-        return findById(id)
-                .map(recordFound -> {
-                    courseRepository.deleteById(id);
-                    return true;
-                })
-                .orElse(false);
+    public void delete(@NotNull @Positive Long id) {
+        courseRepository.delete(courseRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException(id)));
     }
 }
