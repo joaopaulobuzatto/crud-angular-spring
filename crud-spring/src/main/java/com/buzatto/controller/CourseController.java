@@ -1,6 +1,6 @@
 package com.buzatto.controller;
 
-import com.buzatto.model.Course;
+import com.buzatto.dto.CourseDTO;
 import com.buzatto.service.CourseService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -23,24 +23,25 @@ public class CourseController {
     }
 
     @GetMapping
-    public List<Course> list() {
+    public List<CourseDTO> list() {
         return courseService.list();
     }
 
     @GetMapping("/{id}")
-    public Course findById(@PathVariable @NotNull @Positive Long id) {
+    public CourseDTO findById(@PathVariable @NotNull @Positive Long id) {
         return courseService.findById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Course create(@RequestBody @Valid Course course) {
-        return courseService.save(course);
+    public CourseDTO create(@RequestBody @Valid @NotNull CourseDTO dto) {
+        return courseService.save(dto);
     }
 
     @PutMapping("/{id}")
-    public Course update(@PathVariable @NotNull @Positive Long id, @RequestBody @Valid Course course) {
-        return courseService.update(id, course);
+    public CourseDTO update(@PathVariable @NotNull @Positive Long id,
+                            @RequestBody @Valid @NotNull CourseDTO dto) {
+        return courseService.update(id, dto);
     }
 
     @DeleteMapping("/{id}")
