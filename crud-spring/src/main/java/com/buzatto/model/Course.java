@@ -1,5 +1,7 @@
 package com.buzatto.model;
 
+import com.buzatto.enums.Category;
+import com.buzatto.enums.converters.CategoryConverter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -28,10 +30,9 @@ public class Course {
     private String name;
 
     @NotNull
-    @Length(max = 10)
-    @Pattern(regexp = "back-end|front-end")
     @Column(length = 10, nullable = false)
-    private String category;
+    @Convert(converter = CategoryConverter.class)
+    private Category category;
 
     @NotNull
     @Length(max = 10)

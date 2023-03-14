@@ -2,6 +2,7 @@ package com.buzatto.service;
 
 import com.buzatto.dto.CourseDTO;
 import com.buzatto.dto.mapper.CourseMapper;
+import com.buzatto.enums.Category;
 import com.buzatto.exception.RecordNotFoundException;
 import com.buzatto.repository.CourseRepository;
 import jakarta.validation.Valid;
@@ -46,7 +47,7 @@ public class CourseService {
         return courseRepository.findById(id)
                 .map(recordFound -> {
                     recordFound.setName(courseDTO.name());
-                    recordFound.setCategory(courseDTO.category());
+                    recordFound.setCategory(Category.FRONT_END);
                     return courseMapper.toDTO(courseRepository.save(recordFound));
                 }).orElseThrow(() -> new RecordNotFoundException(id));
     }

@@ -1,5 +1,6 @@
 package com.buzatto;
 
+import com.buzatto.enums.Category;
 import com.buzatto.model.Course;
 import com.buzatto.repository.CourseRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -21,7 +22,7 @@ public class CrudSpringApplication {
 
             Course course = new Course();
             course.setName("Angular com Spring");
-            course.setCategory("front-end");
+            course.setCategory(Category.FRONT_END);
 
             courseRepository.save(course);
         };
