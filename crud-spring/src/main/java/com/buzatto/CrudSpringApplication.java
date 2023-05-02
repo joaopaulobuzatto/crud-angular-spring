@@ -2,6 +2,7 @@ package com.buzatto;
 
 import com.buzatto.enums.Category;
 import com.buzatto.model.Course;
+import com.buzatto.model.Lesson;
 import com.buzatto.repository.CourseRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -23,6 +24,12 @@ public class CrudSpringApplication {
             Course course = new Course();
             course.setName("Angular com Spring");
             course.setCategory(Category.FRONT_END);
+
+            Lesson lesson = new Lesson();
+            lesson.setName("Introdução");
+            lesson.setYoutubeUrl("Nb4uxLxdvxo");
+            lesson.setCourse(course);
+            course.getLessons().add(lesson);
 
             courseRepository.save(course);
         };
