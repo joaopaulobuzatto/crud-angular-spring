@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @OpenAPIDefinition
-public class SpringdocConfig {
+public class OpenAPIConfig {
 
     @Bean
     public OpenAPI springShopOpenAPI() {
