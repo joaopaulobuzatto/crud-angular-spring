@@ -4,6 +4,7 @@ import com.buzatto.enums.Category;
 import com.buzatto.enums.Status;
 import com.buzatto.enums.converters.CategoryConverter;
 import com.buzatto.enums.converters.StatusConverter;
+import com.buzatto.utils.SlugifyUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -52,6 +53,12 @@ public class Course {
     @Column(length = 100, nullable = false)
     private String name;
 
+    @NotBlank
+    @NotNull
+    @Length(min = 3, max = 100)
+    @Column(length = 100, nullable = false, unique = true)
+    private String slug;
+
     @NotNull
     @Column(length = 10, nullable = false)
     @Convert(converter = CategoryConverter.class)
@@ -64,4 +71,10 @@ public class Course {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "course")
     private List<Lesson> lessons = new ArrayList<>();
+
+    @PrePersist
+    @PreUpdate
+    private void generateSlug() {
+        this.slug = SlugifyUtils.slugify(name);
+    }
 }

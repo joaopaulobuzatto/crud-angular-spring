@@ -1,5 +1,6 @@
 package com.buzatto.model;
 
+import com.buzatto.utils.SlugifyUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -35,6 +36,9 @@ public class Lesson {
     @Column(length = 100, nullable = false)
     private String name;
 
+    @Column(length = 100, nullable = false, unique = true)
+    private String slug;
+
     @Column(length = 11, nullable = false)
     private String youtubeUrl;
 
@@ -42,5 +46,11 @@ public class Lesson {
     @JoinColumn(name = "course_id", nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Course course;
+
+    @PrePersist
+    @PreUpdate
+    private void generateSlug() {
+        this.slug = SlugifyUtils.slugify(name);
+    }
 
 }
