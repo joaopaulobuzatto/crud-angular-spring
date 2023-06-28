@@ -22,28 +22,35 @@ class CrudSpringApplicationTests {
     @Test
     public void testCreateCourseSuccess() {
         final String name = "Valid Name";
+        final String slug = "valid-name";
         final String category = Category.BACK_END.getValue();
 
         webTestClient
                 .post()
                 .uri("/api/courses")
-                .bodyValue(new CourseDTO(null, name, category, new ArrayList<>()))
+                .bodyValue(new CourseDTO(null, null, null,
+                        name, null, category, new ArrayList<>()))
                 .exchange()
                 .expectStatus().isCreated()
                 .expectBody()
                 .jsonPath("name").isEqualTo(name)
-                .jsonPath("category").isEqualTo(category);
+                .jsonPath("category").isEqualTo(category)
+                .jsonPath("slug").isEqualTo(slug)
+                .jsonPath("createdDate").isNotEmpty()
+                .jsonPath("lastModifiedDate").isNotEmpty();
     }
 
     @Test
     public void testCreateCourseFailure() {
         final String name = "";
+        final String slug = "";
         final String category = "";
 
         webTestClient
                 .post()
                 .uri("/api/courses")
-                .bodyValue(new CourseDTO(null, name, category, new ArrayList<>()))
+                .bodyValue(new CourseDTO(null, null, null,
+                        name, slug, category, new ArrayList<>()))
                 .exchange()
                 .expectStatus().isBadRequest();
     }

@@ -20,7 +20,9 @@ public class CourseMapper {
                 .stream()
                 .map(lesson -> new LessonDTO(lesson.getId(), lesson.getName(), lesson.getYoutubeUrl()))
                 .collect(Collectors.toList());
-        return new CourseDTO(course.getId(), course.getName(), course.getCategory().getValue(), lessons);
+        return new CourseDTO(course.getId(),
+                course.getCreatedDate(), course.getLastModifiedDate(),
+                course.getName(), course.getSlug(), course.getCategory().getValue(), lessons);
     }
 
     public Course toEntity(CourseDTO courseDTO) {
