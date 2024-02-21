@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {FormGroup, NonNullableFormBuilder, UntypedFormArray, Validators} from '@angular/forms';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, NonNullableFormBuilder, UntypedFormArray, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
 
-import {CoursesService} from '../services/courses.service';
-import {ActivatedRoute} from "@angular/router";
-import {Course} from "../model/course";
-import {Lesson} from "../model/lesson";
+import { Course } from '../model/course';
+import { Lesson } from '../model/lesson';
+import { CoursesService } from '../services/courses.service';
 
 @Component({
   selector: 'app-course-form',
